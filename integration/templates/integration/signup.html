@@ -1,0 +1,21 @@
+{% load static %}
+{% load djangoflutterwave_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up </title>
+    <script type="text/javascript" src="https://checkout.flutterwave.com/v3.js"></script>
+    <script src="{% static 'djangoflutterwave/js/payment.js' %}"></script>
+</head>
+
+<body>
+    {% include 'djangoflutterwave/pay_button.html' with plan=pro_plan %}
+   
+
+</body>
+
+</html>
