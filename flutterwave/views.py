@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 # project imports
-from flutterwave.models import FlwTransactionModel, FlwPlanModel
+from flutterwave.models import FlwTransactionModel, FlwPlanModel,FlwPlanModel1
 from flutterwave.serializers import DRTransactionSerializer
 
 

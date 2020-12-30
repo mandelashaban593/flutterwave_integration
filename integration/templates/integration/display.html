@@ -1,0 +1,14 @@
+<script type="text/javascript">
+var options = {
+  'method': 'GET',
+  'url': 'https://api.flutterwave.com/v3/transactions/123456/verify',
+  'headers': {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer {{SEC_KEY}}'
+  }
+};
+request(options, function (error, response) { 
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+</script>

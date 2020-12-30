@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+  <div class="img-wrapper">
+            <img src="/static/places/images/p1.jpg" alt="">
+        </div>
+        <div class="login-box">
+            
+                <h1>Login Here</h1>
+                <div class="message">
+                    {% if message %}
+                        {{ message }}
+                    {% endif %}
+                </div>
+                <form action="{% url 'integration:login' %}" method="POST">
+                    {% csrf_token %}
+                    <p>Username <i class="fas fa-user"></i></p> 
+                    <input type="text" name="username" placeholder="Enter Username">
+                    <p>Password <i class="fas fa-lock"></i></p>
+                    <input type="password" name="password" placeholder="Enter Password">
+                    <input type="submit" name="submit" value="Login">
+                     
+                    </form>
+                
+                
+                </div>
+</body>
+</html>
