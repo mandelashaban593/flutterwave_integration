@@ -1,0 +1,430 @@
+{% load static %}
+{% load djangoflutterwave_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up </title>
+    <script type="text/javascript" src="https://checkout.flutterwave.com/v3.js"></script>
+    <script src="{% static 'djangoflutterwave/js/payment.js' %}"></script>
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            /* by default hide all radio_content div elements except first element */
+            $(".content .radio_content").hide();
+            $(".content .radio_content:first-child").show();
+
+            /* when any radio element is clicked, Get the attribute value of that clicked radio element and show the radio_content div element which matches the attribute value and hide the remaining tab content div elements */
+            $(".radio_wrap").click(function(){
+              var current_raido = $(this).attr("data-radio");
+              $(".content .radio_content").hide();
+              $("."+current_raido).show();
+            })
+        });
+    </script>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="radio_tabs">
+        <label class="radio_wrap" data-radio="radio_1">
+            <input type="radio" name="sports" class="input" checked>
+            <span class="radio_mark">
+                Football
+            </span>
+        </label>
+        <label class="radio_wrap" data-radio="radio_2">
+            <input type="radio" name="sports" class="input">
+            <span class="radio_mark">
+                Basketball
+            </span>
+        </label>
+    </div>
+</div>
+<div class="content">
+        <div class="radio_content radio_1">
+            <p>Association football, more commonly known as football or soccer, is a team sport played with a spherical ball between two teams of eleven players. It is played by 250 million players in over 200 countries and dependencies, making it the world's most popular sport. The game is played on a rectangular field called a pitch with a goal at each end. The object of the game is to score by moving the ball beyond the goal line into the opposing goal.</p>
+            <p>Association football is one of a family of football codes, which emerged from various ball games played worldwide since antiquity. The modern game traces its origins to 1863 when the Laws of the Game were originally codified in England by The Football Association.</p>
+            <p>Players are not allowed to touch the ball with hands or arms while it is in play, except for the goalkeepers within the penalty area. Other players mainly use their feet to strike or pass the ball, but may also use any other part of their body except the hands and the arms. The team that scores most goals by the end of the match wins. If the score is level at the end of the game, either a draw is declared or the game goes into extra time or a penalty shootout depending on the format of the competition. Association football is governed internationally by the International Federation of Association Football (FIFA; French: Fédération Internationale de Football Association), which organises World Cups for both men and women every four years.</p>
+        </div>
+        <div class="radio_content radio_2">
+            <p>Basketball is a team sport in which two teams, most commonly of five players each, opposing one another on a rectangular court, compete with the primary objective of shooting a basketball (approximately 9.4 inches (24 cm) in diameter) through the defender's hoop (a basket 18 inches (46 cm) in diameter mounted 10 feet (3.048 m) high to a backboard at each end of the court) while preventing the opposing team from shooting through their own hoop. A field goal is worth two points, unless made from behind the three-point line, when it is worth three. After a foul, timed play stops and the player fouled or designated to shoot a technical foul is given one or more one-point free throws. The team with the most points at the end of the game wins, but if regulation play expires with the score tied, an additional period of play (overtime) is mandated.</p>
+            <p>Players advance the ball by bouncing it while walking or running (dribbling) or by passing it to a teammate, both of which require considerable skill. On offense, players may use a variety of shots—the lay-up, the jump shot, or a dunk; on defense, they may steal the ball from a dribbler, intercept passes, or block shots; either offense or defense may collect a rebound, that is, a missed shot that bounces from rim or backboard. It is a violation to lift or drag one's pivot foot without dribbling the ball, to carry it, or to hold the ball with both hands then resume dribbling.</p>
+        </div>
+
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   {%for natural in naturals%}
+         <div class="card" style="width: 18rem;">
+        
+    <img src="https://edoctorug.com/static/img/edoctor.png" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+       {%if user.is_superuser%}
+ <a href="{%url 'integration:create_plan' natural.id%}" class="btn btn-danger"> Update</a>
+ {%else%}
+ payment 
+ {%endif%}
+            {{plan.name}} 
+      <script>
+        function createPaymentParams() {
+            // Create payment params which will be sent to Flutterwave upon payment
+            {% autoescape off %}
+            let pay_button_params = JSON.parse('{% if user.is_authenticated %}{% pay_button_params user_pk=user.pk plan_pk=plan.pk %}{% endif %}');
+            {% endautoescape %}
+            paymentParams['{{ natural.name }} '] = {
+                public_key: pay_button_params.public_key,
+                tx_ref: pay_button_params.tx_ref,
+                amount: '{{natural.amount}} ',
+                currency: '{{natural.currency}}',
+                redirect_url: pay_button_params.redirect_url,
+                payment_plan: '',
+                payment_type:'',
+                customer: {
+                    email: '{{ user.email }}',
+                    name: '{{ user.first_name }} {{ user.last_name }}',
+                },
+                customizations: {
+                    title: '',
+                    logo: 'https://edoctorug.com/static/img/edoctor.png',
+                },
+            }
+        }
+        if ('{{ user.is_authenticated }}' === 'True') {
+            createPaymentParams();
+        }
+    </script>
+    
+    {% if user.is_authenticated %}
+    <button
+        class="{{ plan.pay_button_css_classes }}"
+        type="button"
+        onClick="makePayment(paymentParams['{{ natural.name }} '])">
+        {{ natural.pay_button_text }} 
+            </button>
+    
+    
+    {% else %}
+    <p>User must be signed in</p>
+    {% endif %}
+
+  
+
+  {%endfor%}
+    
+ 
+    <script>
+        function createPaymentParams() {
+            // Create payment params which will be sent to Flutterwave upon payment
+            {% autoescape off %}
+            let pay_button_params = JSON.parse('{% if user.is_authenticated %}{% pay_button_params user_pk=user.pk plan_pk=plan.pk %}{% endif %}');
+            {% endautoescape %}
+            paymentParams['{{ natural.name }}'] = {
+                public_key: pay_button_params.public_key,
+                tx_ref: pay_button_params.tx_ref,
+                amount: '{{natural.amount}}',
+                currency: '{{natural.currency}}',
+                redirect_url: pay_button_params.redirect_url,
+                payment_plan: '',
+                payment_type:'',
+                customer: {
+                    email: '{{ user.email }}',
+                    name: '{{ user.first_name }} {{ user.last_name }}',
+                },
+                customizations: {
+                    title: '',
+                    logo: 'https://edoctorug.com/static/img/edoctor.png',
+                },
+            }
+        }
+        if ('{{ user.is_authenticated }}' === 'True') {
+            createPaymentParams();
+        }
+    </script>
+     {%if user.is_superuser%}
+ <a href="{%url 'integration:create_plan' natural.id%}" class="btn btn-danger"> Update</a>
+ {%else%}
+ payment 
+ {%endif%}
+    
+    {% if user.is_authenticated %}
+    <button
+        class="{{ natural.pay_button_css_classes }}"
+        type="button"
+        onClick="makePayment(paymentParams['{{ natural.name }}'])">
+        {{ natural.pay_button_text }} 
+        
+    </button>
+    
+    
+    {% else %}
+    <p>User must be signed in</p>
+    {% endif %}
+    
+    </div>
+  </div>
+ 
+  {%endfor%}
+
+  {%endfor%}
+ 
+</div>
+
+</body>
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {%for plan in plans%}
+         <div class="card" style="width: 18rem;">
+        
+    <img src="https://edoctorug.com/static/img/edoctor.png" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+       {%if user.is_superuser%}
+ <a href="{%url 'integration:createplan' plan.id %}" class="btn btn-danger"> Update</a>
+ {%else%}
+ payment 
+ {%endif%}
+            {{plan.name}} 
+      <script>
+        function createPaymentParams() {
+            // Create payment params which will be sent to Flutterwave upon payment
+            {% autoescape off %}
+            let pay_button_params = JSON.parse('{% if user.is_authenticated %}{% pay_button_params user_pk=user.pk plan_pk=plan.pk %}{% endif %}');
+            {% endautoescape %}
+            paymentParams['{{ plan.name }} '] = {
+                public_key: pay_button_params.public_key,
+                tx_ref: pay_button_params.tx_ref,
+                amount: '{{plan.amount}} ',
+                currency: '{{plan.currency}}',
+                redirect_url: pay_button_params.redirect_url,
+                payment_plan: '',
+                payment_type:'',
+                customer: {
+                    email: '{{ user.email }}',
+                    name: '{{ user.first_name }} {{ user.last_name }}',
+                },
+                customizations: {
+                    title: '',
+                    logo: 'https://edoctorug.com/static/img/edoctor.png',
+                },
+            }
+        }
+        if ('{{ user.is_authenticated }}' === 'True') {
+            createPaymentParams();
+        }
+    </script>
+    
+    {% if user.is_authenticated %}
+    <button
+        class="{{ plan.pay_button_css_classes }}"
+        type="button"
+        onClick="makePayment(paymentParams['{{ plan.name }} '])">
+        {{ plan.pay_button_text }} 
+            </button>
+    
+    
+    {% else %}
+    <p>User must be signed in</p>
+    {% endif %}
+
+  
+
+  {%endfor%}
